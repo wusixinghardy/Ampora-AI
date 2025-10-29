@@ -12,6 +12,9 @@ __pycache__/
 venv/
 ENV/
 env/
+venv-fastapi/
+__pycache__/
+*.pyc
 
 # Editor stuff
 .vscode/

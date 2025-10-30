@@ -84,6 +84,7 @@ def generate_lecture_script(objectives: List[str]) -> str:
         f"Here are the learning objectives for this lecture:\n{joined_objectives}\n\n"
         "Please write a full lecture script that a human teacher could read aloud. "
         "The lecture script should be for video lecture, such as YouTube educational video or an online course. "
+        "The script should be readable; for mathematical terms, use plain, spoken-style explanations instead of symbols or equations."
         "Include:\n"
         "- Clear topic transitions\n"
         "- Occasional rhetorical questions to keep students engaged\n"

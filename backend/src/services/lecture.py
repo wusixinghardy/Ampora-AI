@@ -29,9 +29,7 @@ def generate_learning_objectives(input_data: Union[str, os.PathLike]) -> List[st
         "extremely specific, step-by-step learning objectives for teaching university-level lectures."
     )
 
-    # Check input type
     if isinstance(input_data, str) and os.path.isfile(input_data):
-        # PDF or slide
         text_content = extract_text_from_pdf(input_data)
         user_prompt = (
             "The following is extracted content from a textbook or slide. "
@@ -43,7 +41,6 @@ def generate_learning_objectives(input_data: Union[str, os.PathLike]) -> List[st
             f"CONTENT:\n{text_content}"
         )
     else:
-        # Concept only
         concept = str(input_data)
         user_prompt = (
             f"Topic: {concept}\n\n"
@@ -57,7 +54,6 @@ def generate_learning_objectives(input_data: Union[str, os.PathLike]) -> List[st
 
     raw_output = client.chat(system_prompt, user_prompt)
 
-    # Parse objectives list into clean list of strings
     objectives = []
     for line in raw_output.splitlines():
         if line.strip():
@@ -67,58 +63,141 @@ def generate_learning_objectives(input_data: Union[str, os.PathLike]) -> List[st
     return objectives
 
 
-def generate_lecture_script(objectives: List[str]) -> str:
+def generate_lecture_script(objectives: List[str]) -> List[str]:
     """
-    Take a list of learning objectives and produce a natural, teacher-like lecture script.
+    Take a list of learning objectives and produce a lecture script divided into slide segments.
+    Each element in the returned list is the spoken script for one slide.
     """
     client = ChatGPTClient()
+
     system_prompt = (
-    "You are an enthusiastic and friendly YouTube educator inspired by StatQuest. "
-    "Your goal is to teach complex topics in a way that sounds completely natural when read aloud by a voice-over narrator. "
-    "All explanations should flow like spoken sentences — smooth, conversational, and free of written formulas or punctuation-heavy text. "
-    "Do not include math symbols, equations, or long numeric expressions. Instead, describe them in words, for example: "
-    "'theta equals zero' becomes 'we start with theta set to zero,' and '2 times 0 equals 0' becomes 'when we multiply two by zero, we get zero.' "
-    "Avoid lists, hyphens, and markdown formatting. Write in full sentences and use natural transitions like 'first,' 'then,' 'next,' 'finally,' or 'in other words.' "
-    "The lecture must follow this structure:\n"
-    "1. What is [the topic] — give a simple spoken explanation.\n"
-    "2. Why it is important — explain why people should care or how it fits into the bigger picture.\n"
-    "3. Where or in what applications it is used — provide real-world spoken examples.\n"
-    "4. Then dive into the details — explain step by step using spoken-style reasoning, no formulas.\n"
-    "5. Finish with a clear, verbal summary and a friendly closing note.\n"
-    "Keep a warm, lively, and approachable tone — like a YouTube educator talking directly to the audience. "
-    "The output must sound perfectly natural when read aloud by text-to-speech software."
-)
+        "You are an enthusiastic and friendly YouTube educator inspired by StatQuest. "
+        "Your goal is to teach complex topics in a way that sounds completely natural when read aloud by a voice-over narrator. "
+        "All explanations should flow like spoken sentences — smooth, conversational, and free of written formulas or punctuation-heavy text. "
+        "Do not include math symbols, equations, or long numeric expressions. Instead, describe them in words. "
+        "Avoid lists, hyphens, or markdown formatting. Write in full sentences using transitions like "
+        "'first,' 'then,' 'next,' 'finally,' or 'in other words.' "
+        "Your lecture must follow this logical structure:\n"
+        "1. What is [the topic]\n"
+        "2. Why it is important (Where or in what applications it is used)\n"
+        "3. Details and step-by-step reasoning\n"
+        "4. Summary and key takeaway.\n"
+        "However, divide your output into multiple slide segments — each slide containing one coherent spoken section. "
+        "Each slide should feel like a small chapter explaining different objective in the lecture. "
+        "At the start of each new slide, include a natural transition from the previous one, like "
+        "'Now that we’ve covered the basics,' or 'Let’s move on to the next part.' "
+        "At the end of the last slide, wrap up with a friendly, verbal conclusion. "
+        "The final output must be in valid JSON format, where each slide number maps to its script, for example:\n"
+        "{\n"
+        "  'Slide 1': 'Introduction and explanation...',\n"
+        "  'Slide 2': 'Transition and deeper explanation...',\n"
+        "  'Slide 3': 'Summary and wrap-up...'\n"
+        "}"
+    )
 
     joined_objectives = "\n".join([f"- {obj}" for obj in objectives])
 
     user_prompt = (
-    f"Here are the learning objectives for this lecture:\n{joined_objectives}\n\n"
-    "Please write a complete lecture script that can be read naturally by a voice-over narrator for a YouTube-style educational video. "
-    "Follow this structure:\n"
-    "1. What is [the topic]\n"
-    "2. Why it is important\n"
-    "3. Where or in what applications it is used\n"
-    "4. Then dive into the details\n"
-    "5. Finish with a summary\n\n"
-    "The lecture should sound like a spoken narrative — not a list or a script full of math or symbols. "
-    "Avoid equations, code, or written formatting like dashes, bullets, or colons. "
-    "Write full sentences with smooth transitions, like 'first,' 'next,' 'let’s think about this,' or 'now that we understand that part.' "
-    "If you need to describe a mathematical operation, say it in words, not symbols. For example: instead of writing 'x equals two times y,' say 'x is calculated by multiplying y by two.' "
-    "The tone should be friendly, structured, and easy to follow, like a StatQuest-style video. "
-    "Use rhetorical questions, analogies, and enthusiastic transitions (like 'Bam!' or 'Now we understand that part!') to keep students engaged. "
-    "Keep punctuation simple — no lists, symbols, or markdown. "
-    "The final output should be completely readable and sound fluid when spoken by a text-to-speech engine."
-)
+        f"Here are the learning objectives for this lecture:\n{joined_objectives}\n\n"
+        "Please generate a full lecture script following the structure and tone described above. "
+        "Divide it naturally into slide segments, with smooth transitions between slides. "
+        "Each slide should contain the narration text for that section and be labeled clearly as a JSON object "
+        "where keys are 'Slide 1', 'Slide 2', etc. "
+        "Ensure the speech flows naturally across slides when read aloud by a voice-over."
+    )
 
-    lecture_text = client.chat(system_prompt, user_prompt)
-    return lecture_text
+    raw_output = client.chat(system_prompt, user_prompt)
+
+    import json
+    slides = []
+    try:
+        parsed = json.loads(raw_output)
+        for key in sorted(parsed.keys()):
+            slides.append(parsed[key].strip())
+    except json.JSONDecodeError:
+        current_slide = []
+        for line in raw_output.splitlines():
+            if "Slide" in line and ":" in line:
+                if current_slide:
+                    slides.append(" ".join(current_slide).strip())
+                    current_slide = []
+            else:
+                current_slide.append(line.strip())
+        if current_slide:
+            slides.append(" ".join(current_slide).strip())
+
+    return slides
 
 
-# Example manual run
+
+def generate_bulletpoints(slide_scripts: List[str]) -> dict:
+    """
+    Generate concise bullet points for each slide based on its narration script.
+    Each key in the returned dictionary corresponds to 'Slide X',
+    and its value is a list of short, clear bullet points summarizing that slide.
+    """
+
+    client = ChatGPTClient()
+
+    system_prompt = (
+        "You are an expert in instructional design and summarization. "
+        "Your job is to transform each spoken-style slide narration into concise, readable bullet points "
+        "that can be displayed on PowerPoint or presentation slides. "
+        "The goal is to capture the essence of each slide into short, punchy bullet points like in a lecture slide. "
+        "Use simple, readable phrases — not full sentences — and avoid punctuation-heavy or academic phrasing. "
+        "Use equations, math symbols, or code when necessary. "
+        "Keep the wording short and visually clean for slide readability."
+    )
+
+    slides_text = "\n\n".join([
+        f"Slide {i+1}:\n{script}" for i, script in enumerate(slide_scripts)
+    ])
+
+    user_prompt = (
+        f"The following are the voice-over narrations for each slide in a lecture:\n\n{slides_text}\n\n"
+        "For each slide, summarize the key ideas as bullet points suitable for slides. "
+        "Return the result in valid JSON format, where each key is 'Slide 1', 'Slide 2', etc., "
+        "and each value is a list of short bullet point strings. Example:\n"
+        "{\n"
+        "  'Slide 1': ['Definition of SGD', 'Optimization by small updates', 'Uses mini-batches'],\n"
+        "  'Slide 2': ['Why SGD matters', 'Efficient for large datasets']\n"
+        "}"
+    )
+
+    raw_output = client.chat(system_prompt, user_prompt)
+
+    import json
+    bulletpoints = {}
+    try:
+        bulletpoints = json.loads(raw_output)
+    except json.JSONDecodeError:
+        bulletpoints = {}
+        current_slide = None
+        for line in raw_output.splitlines():
+            line = line.strip()
+            if line.startswith("Slide "):
+                current_slide = line.split(":")[0]
+                bulletpoints[current_slide] = []
+            elif current_slide and line:
+                cleaned = line.strip("-•1234567890. \t")
+                if len(cleaned) > 2:
+                    bulletpoints[current_slide].append(cleaned)
+    return bulletpoints
+
+
 if __name__ == "__main__":
     topic = "Stochastic Gradient Descent"
     objectives = generate_learning_objectives(topic)
-    print("Learning Objectives:\n", objectives)
-    print("\n---\nGenerating lecture script...\n")
-    script = generate_lecture_script(objectives)
-    print(script)
+    print("\n🎯 LEARNING OBJECTIVES:\n", objectives)
+
+    print("\n---\n🎬 GENERATING LECTURE SCRIPT (divided into slides)...\n")
+    slides = generate_lecture_script(objectives)
+    for i, s in enumerate(slides, 1):
+        print(f"\n🟩 Slide {i}:\n{s}\n")
+
+    print("\n---\n📊 GENERATING BULLET POINTS FOR EACH SLIDE...\n")
+    bullets = generate_bulletpoints(slides)
+    for slide, pts in bullets.items():
+        print(f"\n{slide}:")
+        for p in pts:
+            print(f" - {p}")

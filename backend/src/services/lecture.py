@@ -63,78 +63,122 @@ def generate_learning_objectives(input_data: Union[str, os.PathLike]) -> List[st
     return objectives
 
 
-def generate_lecture_script(objectives: List[str]) -> List[str]:
+def generate_lecture_script(objectives: List[str]) -> List[List[str]]:
     """
     Take a list of learning objectives and produce a lecture script divided into slide segments.
-    Each element in the returned list is the spoken script for one slide.
+    Each element in the returned list is [script_text, visualization_description] for that slide.
     """
     client = ChatGPTClient()
 
     system_prompt = (
-        "You are an enthusiastic and friendly YouTube educator inspired by StatQuest. "
-        "Your goal is to teach complex topics in a way that sounds completely natural when read aloud by a voice-over narrator. "
-        "All explanations should flow like spoken sentences — smooth, conversational, and free of written formulas or punctuation-heavy text. "
-        "Do not include math symbols, equations, or long numeric expressions. Instead, describe them in words. "
-        "Avoid lists, hyphens, or markdown formatting. Write in full sentences using transitions like "
-        "'first,' 'then,' 'next,' 'finally,' or 'in other words.' "
-        "Your lecture must follow this logical structure:\n"
-        "1. What is [the topic]\n"
-        "2. Why it is important (Where or in what applications it is used)\n"
-        "3. Details and step-by-step reasoning\n"
-        "4. Summary and key takeaway.\n"
-        "However, divide your output into multiple slide segments — each slide containing one coherent spoken section. "
-        "Each slide should feel like a small chapter explaining different objective in the lecture. "
-        "At the start of each new slide, include a natural transition from the previous one, like "
-        "'Now that we’ve covered the basics,' or 'Let’s move on to the next part.' "
-        "At the end of the last slide, wrap up with a friendly, verbal conclusion. "
-        "The final output must be in valid JSON format, where each slide number maps to its script, for example:\n"
-        "{\n"
-        "  'Slide 1': 'Introduction and explanation...',\n"
-        "  'Slide 2': 'Transition and deeper explanation...',\n"
-        "  'Slide 3': 'Summary and wrap-up...'\n"
-        "}"
+    "You are an enthusiastic and friendly YouTube educator inspired by StatQuest, "
+    "but you also explain topics with the depth and precision of a university professor. "
+    "Your goal is to teach complex technical topics in a way that is spoken, natural, "
+    "detailed, and deeply thorough. The final narration should be something a voice-over "
+    "could read smoothly and clearly. \n\n"
+
+    "Your style requirements:\n"
+    "- Spoken, conversational tone, but still rigorous and precise.\n"
+    "- Very detailed explanations — as detailed as a full lecture.\n"
+    "- When describing math, convert symbols to spoken form, such as 'theta equals zero'.\n"
+    "- Avoid symbols entirely (no latex, no formulas, no symbols like ∇, Σ, etc.).\n"
+    "- Avoid bullet lists, markdown formatting, or hyphen-style enumerations.\n"
+    "- Use transitions like 'first', 'next', 'now let’s walk through', 'to make this concrete', "
+    "'in practice', 'what this really means is'.\n"
+    "- Each slide must be long, thorough, and multi-paragraph. Don't shorten anything.\n\n"
+
+    "Slide structure requirements:\n"
+    "1. Start with: what the topic is, in spoken explanation.\n"
+    "2. Then: why the topic is important, where it is used, and why people should care.\n"
+    "3. Then: rich, multi-paragraph technical detail with examples, analogies, and step-by-step reasoning.\n"
+    "4. The slides should roughly follow the learning objectives, but in narrative form.\n"
+    "5. The narration should be as long and detailed as a real lecture segment.\n"
+    "6. Before each slide, include a smooth spoken transition from the previous slide.\n"
+    "7. The final slide should end with a warm spoken conclusion.\n\n"
+
+    "Visualization requirement for each slide:\n"
+    "Along with the narration, you must produce a clear, specific visualization description that explains exactly "
+    "what diagrams, animations, charts, or graphical elements should appear on that slide. "
+    "These descriptions must be very detailed so that another teammate can build them without guessing. "
+    "Each visualization should match the concepts explained in that slide.\n\n"
+
+    "Output format requirement:\n"
+    "You must output valid JSON. Each slide is a JSON object with two fields:\n"
+    "  'script': the detailed narration text for that slide\n"
+    "  'visualization': a detailed description of what visuals should appear on that slide\n\n"
+
+    "Example output (format only, not content):\n"
+    "{\n"
+    "  'Slide 1': {\n"
+    "      'script': 'Very long spoken narration...',\n"
+    "      'visualization': 'Detailed visual description...'\n"
+    "  },\n"
+    "  'Slide 2': {\n"
+    "      'script': 'Transition into next topic followed by detailed narration...',\n"
+    "      'visualization': 'Another detailed visual description...'\n"
+    "  }\n"
+    "}\n\n"
+
+    "Most important instruction: The narration must be long, deeply detailed, and rich — "
+    "not brief summaries. Write as if this is a full multi-minute lecture per slide."
     )
 
     joined_objectives = "\n".join([f"- {obj}" for obj in objectives])
 
     user_prompt = (
-        f"Here are the learning objectives for this lecture:\n{joined_objectives}\n\n"
-        "Please generate a full lecture script following the structure and tone described above. "
-        "Divide it naturally into slide segments, with smooth transitions between slides. "
-        "Each slide should contain the narration text for that section and be labeled clearly as a JSON object "
-        "where keys are 'Slide 1', 'Slide 2', etc. "
-        "Ensure the speech flows naturally across slides when read aloud by a voice-over."
+    f"Here are the learning objectives for this lecture:\n{joined_objectives}\n\n"
+    "Generate a long, detailed lecture divided into multiple slides. Follow all style, structure, and output "
+    "requirements from the system prompt. Each slide must be several paragraphs long, explaining the concept "
+    "with clarity, intuition, examples, and step-by-step reasoning.\n\n"
+    "Each slide MUST contain:\n"
+    "- A 'script' field: the voice-over narration that is long, rich, and highly detailed.\n"
+    "- A 'visualization' field: a very detailed description of exactly what visuals should appear on that slide.\n\n"
+    "The number of slides is up to you, but you must cover all learning objectives thoroughly. "
+    "Ensure extremely smooth transitions between slides, and ensure the entire lecture flows like a full-length class.\n\n"
+    "Return ONLY a valid JSON object with 'Slide 1', 'Slide 2', etc. "
+    "Each slide's content must follow the format specified in the system prompt."
     )
 
     raw_output = client.chat(system_prompt, user_prompt)
 
     import json
-    slides = []
+    slides_output = []
     try:
         parsed = json.loads(raw_output)
         for key in sorted(parsed.keys()):
-            slides.append(parsed[key].strip())
+            slide_data = parsed[key]
+            script = slide_data.get("script", "").strip()
+            viz = slide_data.get("visualization", "").strip()
+            slides_output.append([script, viz])
     except json.JSONDecodeError:
-        current_slide = []
+        # Fallback parsing if GPT fails JSON format
+        current_script, current_viz = [], []
+        current_mode = None
         for line in raw_output.splitlines():
+            line = line.strip()
             if "Slide" in line and ":" in line:
-                if current_slide:
-                    slides.append(" ".join(current_slide).strip())
-                    current_slide = []
-            else:
-                current_slide.append(line.strip())
-        if current_slide:
-            slides.append(" ".join(current_slide).strip())
+                if current_script or current_viz:
+                    slides_output.append([" ".join(current_script).strip(), " ".join(current_viz).strip()])
+                    current_script, current_viz = [], []
+            elif line.lower().startswith("script"):
+                current_mode = "script"
+            elif line.lower().startswith("visualization"):
+                current_mode = "visualization"
+            elif current_mode == "script":
+                current_script.append(line)
+            elif current_mode == "visualization":
+                current_viz.append(line)
+        if current_script or current_viz:
+            slides_output.append([" ".join(current_script).strip(), " ".join(current_viz).strip()])
 
-    return slides
+    return slides_output
 
 
-
-def generate_bulletpoints(slide_scripts: List[str]) -> dict:
+def generate_bulletpoints(slides: List[List[str]]) -> dict:
     """
     Generate concise bullet points for each slide based on its narration script.
-    Each key in the returned dictionary corresponds to 'Slide X',
-    and its value is a list of short, clear bullet points summarizing that slide.
+    Input slides: List of [script, visualization] for each slide.
+    Output: dict mapping slide number -> list of bullet points.
     """
 
     client = ChatGPTClient()
@@ -142,35 +186,36 @@ def generate_bulletpoints(slide_scripts: List[str]) -> dict:
     system_prompt = (
         "You are an expert in instructional design and summarization. "
         "Your job is to transform each spoken-style slide narration into concise, readable bullet points "
-        "that can be displayed on PowerPoint or presentation slides. "
-        "The goal is to capture the essence of each slide into short, punchy bullet points like in a lecture slide. "
-        "Use simple, readable phrases — not full sentences — and avoid punctuation-heavy or academic phrasing. "
-        "Use equations, math symbols, or code when necessary. "
-        "Keep the wording short and visually clean for slide readability."
+        "that can be displayed on presentation slides. "
+        "Bullet points should be short, punchy, visually clean, and easy to read. "
+        "Avoid long sentences. Use math symbols only when absolutely needed."
     )
 
-    slides_text = "\n\n".join([
-        f"Slide {i+1}:\n{script}" for i, script in enumerate(slide_scripts)
-    ])
+    # Build a readable prompt for GPT
+    slides_text = ""
+    for idx, (script, visualization) in enumerate(slides, start=1):
+        slides_text += f"Slide {idx}:\n"
+        slides_text += f"Narration:\n{script}\n"
+        slides_text += f"Visualization description:\n{visualization}\n\n"
 
     user_prompt = (
-        f"The following are the voice-over narrations for each slide in a lecture:\n\n{slides_text}\n\n"
-        "For each slide, summarize the key ideas as bullet points suitable for slides. "
+        f"The following are the narration and visualization descriptions for each slide:\n\n{slides_text}\n"
+        "For each slide, summarize the key ideas as bullet points suitable for presentation slides. "
         "Return the result in valid JSON format, where each key is 'Slide 1', 'Slide 2', etc., "
         "and each value is a list of short bullet point strings. Example:\n"
         "{\n"
-        "  'Slide 1': ['Definition of SGD', 'Optimization by small updates', 'Uses mini-batches'],\n"
-        "  'Slide 2': ['Why SGD matters', 'Efficient for large datasets']\n"
+        "  'Slide 1': ['Definition of SGD', 'How it updates weights'],\n"
+        "  'Slide 2': ['Why SGD is useful', 'Where it is applied']\n"
         "}"
     )
 
     raw_output = client.chat(system_prompt, user_prompt)
 
     import json
-    bulletpoints = {}
     try:
         bulletpoints = json.loads(raw_output)
     except json.JSONDecodeError:
+        # fallback text parser
         bulletpoints = {}
         current_slide = None
         for line in raw_output.splitlines():
@@ -179,7 +224,7 @@ def generate_bulletpoints(slide_scripts: List[str]) -> dict:
                 current_slide = line.split(":")[0]
                 bulletpoints[current_slide] = []
             elif current_slide and line:
-                cleaned = line.strip("-•1234567890. \t")
+                cleaned = line.strip("-•1234567890.) \t")
                 if len(cleaned) > 2:
                     bulletpoints[current_slide].append(cleaned)
     return bulletpoints
@@ -187,15 +232,19 @@ def generate_bulletpoints(slide_scripts: List[str]) -> dict:
 
 if __name__ == "__main__":
     topic = "Stochastic Gradient Descent"
+
+    print("\n🎯 LEARNING OBJECTIVES:")
     objectives = generate_learning_objectives(topic)
-    print("\n🎯 LEARNING OBJECTIVES:\n", objectives)
+    print(objectives)
 
-    print("\n---\n🎬 GENERATING LECTURE SCRIPT (divided into slides)...\n")
+    print("\n---\n🎬 GENERATING LECTURE SCRIPT (SLIDE STRUCTURE)...")
     slides = generate_lecture_script(objectives)
-    for i, s in enumerate(slides, 1):
-        print(f"\n🟩 Slide {i}:\n{s}\n")
+    for i, pair in enumerate(slides, start=1):
+        script, viz = pair
+        print(f"\n🟩 Slide {i} Script:\n{script}")
+        print(f"🖼️ Slide {i} Visualization:\n{viz}")
 
-    print("\n---\n📊 GENERATING BULLET POINTS FOR EACH SLIDE...\n")
+    print("\n---\n📊 GENERATING BULLET POINTS...")
     bullets = generate_bulletpoints(slides)
     for slide, pts in bullets.items():
         print(f"\n{slide}:")

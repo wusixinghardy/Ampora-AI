@@ -103,13 +103,13 @@ if __name__ == "__main__":
     #   lecture_data = generate_lecture(...)
     #   visual_descriptions = get_visual_descriptions(lecture_data)
     #   generate_visualizations_from_descriptions(visual_descriptions)
-    topic = "Stochastic Gradient Descent"
-    objectives = generate_learning_objectives(topic)
-    lecture = generate_lecture(objectives)
+    # topic = "Stochastic Gradient Descent"
+    # objectives = generate_learning_objectives(topic)
+    # lecture = generate_lecture(objectives)
 
-    scripts = get_scripts(lecture)
-    visuals = get_visual_descriptions(lecture)
-    bullets = get_bulletpoints(lecture)
+    # scripts = get_scripts(lecture)
+    # visuals = get_visual_descriptions(lecture)
+    # bullets = get_bulletpoints(lecture)
 
     hardcoded_visuals = [
         "Title: Empirical Risk Minimization. Left side: a simple diagram of a dataset as a grid of small dots labeled x one through x n, each with an associated y label. Middle: a box labeled Model with parameter theta takes each x i and outputs predictions. Right side: a panel labeled Per-example loss ell of x i and y i with a simple bar chart showing losses for individual samples. Next to it, a larger panel titled Empirical risk equals average loss shows a big average bar being computed from the individual bars. Below all of this, a horizontal arrow flows from Dataset to Model to Loss to Average Loss, highlighting the pipeline. In the bottom right, a vector arrow labeled Gradient of full loss points downhill on a contour-like loss landscape with theta on the axes, illustrating the direction of steepest decrease.",

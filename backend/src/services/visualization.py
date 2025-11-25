@@ -1,8 +1,8 @@
 import os
 import json
-from typing import List, Union
+import concurrent.futures
+from typing import List, Union, Tuple
 from src.LLM.Gemini import GeminiClient
-
 
 # ============================================================
 # BUILD THE GEMINI PROMPT FOR ONE SLIDE
@@ -12,16 +12,12 @@ def build_gemini_slide_prompt(slide: dict) -> str:
     """
     Build the full prompt for generating a single slide image using Gemini.
     """
-
     title = slide.get("title", "").strip()
     bulletpoints = slide.get("bulletpoints", [])
     visual_step = slide.get("visual_step_description", "").strip()
 
     bullet_text = "\n".join([f"- {bp}" for bp in bulletpoints])
 
-    # ----------------------
-    # THE FULL PROFESSIONAL PROMPT
-    # ----------------------
     return f"""
         You are a professional presentation designer who creates clean, modern,
         university-level lecture slides in the style of MIT, Stanford, and DeepMind,
@@ -88,60 +84,79 @@ def build_gemini_slide_prompt(slide: dict) -> str:
 
 
 # ============================================================
-# GENERATE ALL SLIDE IMAGES USING GEMINI
+# HELPER: PROCESS A SINGLE SLIDE (THREADED)
+# ============================================================
+
+def _generate_single_slide(
+    idx: int, 
+    slide: dict, 
+    output_dir: str, 
+    client: GeminiClient
+) -> Union[str, None]:
+    """
+    Helper function to generate a single slide. 
+    Used by ThreadPoolExecutor.
+    """
+    prompt = build_gemini_slide_prompt(slide)
+    output_path = os.path.abspath(os.path.join(output_dir, f"slide_{idx:02d}.png"))
+    
+    print(f"   [Started] Slide {idx}: '{slide.get('title', 'Untitled')}'")
+    
+    try:
+        image_bytes = client.generate_image(prompt)
+        with open(output_path, "wb") as f:
+            f.write(image_bytes)
+        print(f"   [Done] Slide {idx} saved.")
+        return output_path
+    except Exception as e:
+        print(f"   [ERROR] Slide {idx} failed: {e}")
+        return None
+
+
+# ============================================================
+# GENERATE ALL SLIDE IMAGES (PARALLEL)
 # ============================================================
 
 def generate_visualizations_with_gemini(
     slide_steps: List[dict],
     output_dir: Union[str, os.PathLike] = "generated_visuals",
-    # Using Gemini 3 Pro Image (Nano Banana) by default as it handles complex prompts well
-    model: str = "gemini-3-pro-image-preview" 
+    model: str = "gemini-3-pro-image-preview",
+    max_workers: int = 5  # Adjust based on rate limits (5 is usually safe)
 ) -> List[str]:
     """
-    Given a list of slide objects each containing:
-        title
-        bulletpoints
-        visual_step_description
-
-    This function generates one slide image per object using Gemini API.
+    Generates slide images in parallel using ThreadPoolExecutor.
     """
-
     os.makedirs(output_dir, exist_ok=True)
 
-    # Initialize Client with the specific image generation model
+    # Initialize Client once (assuming thread-safe or lightweight)
     client = GeminiClient(model=model)
-    output_paths = []
+    
+    output_paths = [None] * len(slide_steps)  # Pre-allocate list to maintain order
+    
+    print(f"Starting PARALLEL generation of {len(slide_steps)} slides (Workers: {max_workers})...")
 
-    print(f"Starting generation of {len(slide_steps)} slides using model: {model}")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Dictionary to map futures back to their index
+        future_to_index = {
+            executor.submit(_generate_single_slide, idx, slide, output_dir, client): idx
+            for idx, slide in enumerate(slide_steps, start=1)
+        }
 
-    for idx, slide in enumerate(slide_steps, start=1):
-        prompt = build_gemini_slide_prompt(slide)
-        
-        # Filename: slide_01.png, slide_02.png...
-        output_path = os.path.abspath(os.path.join(output_dir, f"slide_{idx:02d}.png"))
+        for future in concurrent.futures.as_completed(future_to_index):
+            idx = future_to_index[future]
+            try:
+                result_path = future.result()
+                if result_path:
+                    # Store result in correct index (idx-1 because slides start at 1)
+                    output_paths[idx-1] = result_path
+            except Exception as exc:
+                print(f"   [CRITICAL] Thread exception for slide {idx}: {exc}")
 
-        print(f"Generating slide {idx}/{len(slide_steps)}: '{slide.get('title', 'Untitled')}'...")
-
-        # ============================
-        # CALL GEMINI IMAGE GENERATION
-        # ============================
-        try:
-            # This calls the new method we added to Gemini.py
-            image_bytes = client.generate_image(prompt)
-            
-            # Save to file
-            with open(output_path, "wb") as f:
-                f.write(image_bytes)
-            
-            print(f" -> Saved to {output_path}")
-            output_paths.append(output_path)
-
-        except Exception as e:
-            print(f" [ERROR] Failed to generate slide {idx}: {e}")
-            # Optional: continue to next slide instead of crashing entire batch
-            continue
-
-    return output_paths
+    # Filter out any failed (None) paths
+    valid_paths = [p for p in output_paths if p is not None]
+    
+    print(f"Generation complete. {len(valid_paths)}/{len(slide_steps)} slides successful.")
+    return valid_paths
 
 
 # ============================================================
@@ -149,26 +164,23 @@ def generate_visualizations_with_gemini(
 # ============================================================
 
 if __name__ == "__main__":
-
     sample_slides = [
         {
-            "title": "Later Passes: Gradually Sorting (4.1)",
-            "bulletpoints": [
-                "Each pass sorts one more item",
-                "Unsorted region shrinks"
-            ],
-            "visual_step_description": "[3, 4, 2, 5, 8]. Gray out 5 and 8. Highlight (3, 4)."
+            "title": "Slide 1: Intro",
+            "bulletpoints": ["Point A", "Point B"],
+            "visual_step_description": "A simple start diagram."
         },
         {
-            "title": "Time Complexity Overview (6.1)",
-            "bulletpoints": [
-                "Worst: O(n²)",
-                "Average: O(n²)",
-                "Best: O(n) when nearly sorted"
-            ],
-            "visual_step_description": "Simple plot showing comparisons growing quadratically with n."
+            "title": "Slide 2: Middle",
+            "bulletpoints": ["Point C", "Point D"],
+            "visual_step_description": "A complex middle diagram."
+        },
+        {
+            "title": "Slide 3: End",
+            "bulletpoints": ["Point E", "Point F"],
+            "visual_step_description": "A final summary diagram."
         }
     ]
 
     paths = generate_visualizations_with_gemini(sample_slides)
-    print("\nAll generated slide images:", paths)
+    print("\nGenerated paths:", paths)

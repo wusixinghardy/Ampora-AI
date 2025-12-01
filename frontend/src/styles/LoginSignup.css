@@ -1,0 +1,226 @@
+.login-signup-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.login-signup-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.login-signup-container::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+.login-signup-container::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 6px;
+}
+
+.login-signup-container::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+.login-signup-card {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid #333;
+  margin: 20px 0;
+  min-height: fit-content;
+}
+
+.login-signup-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+.login-signup-header h1 {
+  font-size: 2rem;
+  color: #0EA5E9;
+  margin-bottom: 10px;
+}
+
+.login-signup-header p {
+  color: #aaa;
+  font-size: 0.95rem;
+}
+
+.login-signup-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #333;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: #aaa;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-button:hover {
+  color: #fff;
+}
+
+.tab-button.active {
+  color: #0EA5E9;
+  border-bottom-color: #0EA5E9;
+}
+
+.login-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-icon {
+  position: absolute;
+  left: 15px;
+  color: #666;
+  z-index: 1;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #0EA5E9;
+  background-color: #333;
+}
+
+.form-group input::placeholder {
+  color: #666;
+}
+
+.error-message {
+  background-color: rgba(220, 53, 69, 0.2);
+  border: 1px solid #dc3545;
+  color: #ff6b6b;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.submit-button {
+  padding: 14px;
+  background-color: #0EA5E9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #0c94d6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Test Account Info */
+.test-account-hint {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #333;
+}
+
+.test-account-toggle {
+  background: transparent;
+  border: 1px solid #0EA5E9;
+  color: #0EA5E9;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.test-account-toggle:hover {
+  background-color: rgba(14, 165, 233, 0.1);
+}
+
+.test-accounts-info {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.test-accounts-info p {
+  margin: 5px 0;
+  color: #aaa;
+}
+
+.test-accounts-info p strong {
+  color: #0EA5E9;
+}
+
+.test-account-item {
+  font-size: 0.8rem !important;
+  font-family: 'Courier New', monospace;
+  padding: 4px 0;
+}
+
+.test-account-item code {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #00ffcc;
+  font-size: 0.9em;
+}
+
+.test-account-note {
+  margin-top: 8px !important;
+  font-style: italic;
+  color: #888 !important;
+  font-size: 0.75rem !important;
+}

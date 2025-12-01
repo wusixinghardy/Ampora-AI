@@ -1,0 +1,111 @@
+.loading-indicator-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid #333;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: #444 #2a2a2a;
+}
+
+.loading-indicator-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.loading-indicator-container::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.loading-indicator-container::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+.loading-indicator-container::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+.loading-header {
+  background-color: #2a2a2a;
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.loading-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  margin: 0;
+}
+
+.loading-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+}
+
+.generating-spin {
+  animation: spin 2s linear infinite;
+  margin-bottom: 30px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-message {
+  margin-top: 20px;
+}
+
+.loading-message h3 {
+  color: #0EA5E9;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.loading-message p {
+  color: #aaa;
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.idle-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+}
+
+.idle-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.idle-state p {
+  color: #888;
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.idle-subtitle {
+  font-size: 0.9rem;
+  color: #666 !important;
+}

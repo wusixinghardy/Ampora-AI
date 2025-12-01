@@ -35,7 +35,7 @@ class ChatGPTClient:
             ],
         }
 
-        response = requests.post(url, headers=headers, json=payload, timeout=(20, 300))
+        response = requests.post(url, headers=headers, json=payload, timeout=(20, 1000))
 
         if response.status_code != 200:
             raise RuntimeError(

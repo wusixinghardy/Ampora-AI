@@ -45,3 +45,5 @@ const WaveIcon = ({ size = 18, color = '#00ffcc' }) => {
 };
 
 export default WaveIcon;
+
+

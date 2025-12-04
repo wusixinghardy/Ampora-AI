@@ -73,3 +73,5 @@ Some files use mixed case because:
 | Config Files | lowercase | `package.json` |
 
 **This is intentional and follows industry best practices!**
+
+

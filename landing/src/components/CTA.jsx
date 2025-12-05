@@ -12,10 +12,10 @@ const CTA = () => {
   return (
     <section className="cta-section">
       <div className="cta-container">
-        <h2 className="cta-title">Ready to Transform Your Learning?</h2>
+        <h2 className="cta-title">Ready to Transform How You Learn & Train?</h2>
         <p className="cta-subtitle">
-          Join our waitlist for early access and a free trial when we officially launch.
-          Help us show investors the overwhelming demand for accessible AI-powered education.
+          Join our waitlist for early access to the "Sora" for long-form education. 
+          Help us demonstrate the overwhelming demand for instant, high-quality video generation.
         </p>
         
         <div className="cta-buttons">
@@ -28,13 +28,12 @@ const CTA = () => {
         <div className="forms-explanation-box">
           <h4>Why Sign Up?</h4>
           <p>
-            By filling out our interest form, you're helping us demonstrate real market demand 
-            to potential investors and VCs. Your participation shows that students are actively 
-            seeking better educational resources and are willing to support innovative solutions 
-            that make STEM education more accessible. When we launch, you'll be among the first 
-            to experience AI-generated educational videos and help shape the future of personalized 
-            learning. Your interest directly contributes to bringing high-quality, affordable 
-            STEM education to students everywhere.
+            By joining our waitlist, you're helping us prove the market demand for a universal 
+            video generation engine that serves both <strong>Higher Education and Enterprise</strong>. 
+            Your participation demonstrates that the world is ready to replace expensive, slow video 
+            production with AI that instantly turns <strong>text, PDFs, and research papers</strong> into 
+            systematic video courses. Be the first to experience the future of scalable knowledge 
+            and help us democratize access to deep-dive training for everyone.
           </p>
         </div>
       </div>

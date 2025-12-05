@@ -326,7 +326,7 @@ Same process, but deploy to different branch or subdirectory.
 # AI Services
 OPENAI_API_KEY=sk-...
 GEMINI_API_KEY=...
-MODEL_NAME=gpt-4o
+MODEL_NAME=gpt-5
 
 # Database
 SUPABASE_URL=https://xxx.supabase.co

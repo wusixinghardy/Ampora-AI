@@ -4,13 +4,9 @@ import '../styles/CTA.css';
 
 const CTA = () => {
   const handleFreeTrial = () => {
-    // Placeholder for Google Forms link
-    const formsLink = 'YOUR_GOOGLE_FORMS_LINK_HERE'; // Replace with actual link
-    if (formsLink !== 'YOUR_GOOGLE_FORMS_LINK_HERE') {
-      window.open(formsLink, '_blank');
-    } else {
-      alert('Google Forms link will be added here. This collects: Name, Email, Phone, and interest details for investors.');
-    }
+    // Google Forms link for interest form
+    const formsLink = 'https://forms.gle/5JB7j16G82VRZr9i8';
+    window.open(formsLink, '_blank');
   };
 
   return (
@@ -29,14 +25,21 @@ const CTA = () => {
           </button>
         </div>
         
-        <p className="cta-note">
-          By signing up, you'll be among the first to experience AI-generated video lessons 
-          and help us demonstrate market demand to potential investors.
-        </p>
+        <div className="forms-explanation-box">
+          <h4>Why Sign Up?</h4>
+          <p>
+            By filling out our interest form, you're helping us demonstrate real market demand 
+            to potential investors and VCs. Your participation shows that students are actively 
+            seeking better educational resources and are willing to support innovative solutions 
+            that make STEM education more accessible. When we launch, you'll be among the first 
+            to experience AI-generated educational videos and help shape the future of personalized 
+            learning. Your interest directly contributes to bringing high-quality, affordable 
+            STEM education to students everywhere.
+          </p>
+        </div>
       </div>
     </section>
   );
 };
 
 export default CTA;
-

@@ -86,6 +86,36 @@
   line-height: 1.6;
 }
 
+.why-team-section {
+  margin-top: 80px;
+  padding: 40px;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  border-radius: 12px;
+  border: 1px solid #333;
+  text-align: center;
+}
+
+.why-team-title {
+  font-size: 2rem;
+  color: #0EA5E9;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.why-team-text {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.why-team-text:last-child {
+  margin-bottom: 0;
+}
+
 @media (max-width: 768px) {
   .team {
     padding: 60px 20px;

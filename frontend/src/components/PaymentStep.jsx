@@ -184,3 +184,5 @@ const PaymentStep = ({ amount = 9.99, onPaymentSuccess, onCancel }) => {
 
 export default PaymentStep;
 
+
+

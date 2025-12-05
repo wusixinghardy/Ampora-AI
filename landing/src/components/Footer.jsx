@@ -15,7 +15,7 @@ const Footer = () => {
               className="footer-logo"
             />
             <p className="footer-tagline">
-              AI-Powered Career Learning Platform
+              AI-Powered Educational Video Generation Platform
             </p>
           </div>
           
@@ -45,4 +45,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

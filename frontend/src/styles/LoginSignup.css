@@ -48,6 +48,9 @@
   width: auto;
   object-fit: contain;
   margin-bottom: 15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .login-signup-header h1 {

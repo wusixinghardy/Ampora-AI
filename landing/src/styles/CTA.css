@@ -43,6 +43,28 @@
   margin: 0 auto;
 }
 
+.forms-explanation-box {
+  margin-top: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  border-radius: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+
+.forms-explanation-box h4 {
+  color: #0EA5E9;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.forms-explanation-box p {
+  color: #e0e0e0;
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
 @media (max-width: 768px) {
   .cta-section {
     padding: 60px 20px;

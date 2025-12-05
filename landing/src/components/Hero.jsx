@@ -31,19 +31,17 @@ const Hero = () => {
 
         <div className="hero-content">
           <h1 className="hero-title">
-            AI-Powered Educational Video Generation Platform
+            The "Sora" for Education & Enterprise Training
           </h1>
           <p className="hero-subtitle">
-            Transform any technical concept into a complete video lesson with slides,
-            voiceover, and visual explanations—generated in minutes, not hours.
+            Transform any text, PDF, or technical concept into a systematic, long-form video course—generated instantly with professional voiceovers and visual storytelling.
           </p>
           <p className="hero-description">
-            Quality STEM education materials are expensive and time-consuming to create.
-            Ampora AI generates personalized explanations at near-zero cost, making
-            technical education accessible to everyone regardless of financial background.
-            We have <strong>fine-tuned our AI model</strong> to give the best results at an affordable rate,
-            allowing us to educate people on topics that may not be covered by content creators
-            like StatQuest on YouTube or other social media platforms.
+            Ampora solves the high cost of video production and the scarcity of personalized content. 
+            We are building the engine for universal learning: whether you are a university student needing a 
+            guide for a <strong>just-published research paper</strong>, or an enterprise scaling <strong>internal compliance and technical training</strong>, 
+            Ampora generates it instantly. Our proprietary AI ensures copyright compliance and pedagogical structure, 
+            making deep-dive education accessible, up-to-date, and affordable for everyone.
           </p>
 
           <div className="hero-buttons">
@@ -54,9 +52,8 @@ const Hero = () => {
           </div>
 
           <p className="forms-explanation">
-            By signing up for early access, you'll help us demonstrate market demand to potential investors
-            and be among the first to experience AI-generated educational videos. Your interest helps us
-            bring accessible, high-quality STEM education to students everywhere.
+            By signing up for early access, you'll help us demonstrate market demand to potential investors.
+            Join our waitlist to be the first to experience the future of generative video learning.
           </p>
         </div>
       </div>

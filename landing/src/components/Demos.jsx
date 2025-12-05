@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/Demos.css';
 
 const Demos = () => {
@@ -9,39 +8,41 @@ const Demos = () => {
         <p className="section-subtitle">
           Watch our AI generate complete video lessons from simple text prompts
         </p>
-        
+
         <div className="demos-grid">
           <div className="demo-card">
             <h3>Bubble Sort Algorithm</h3>
             <p className="demo-description">
-              A complete video lesson explaining the bubble sort algorithm, 
+              A complete video lesson explaining the bubble sort algorithm,
               generated entirely by AI.
             </p>
             <div className="video-wrapper">
-              <video 
-                controls 
+              <video
+                controls
                 className="demo-video"
-                poster="/Ampora-AI/artifacts/ampora_ai_logo.png"
+                poster="/Ampora-AI/ampora_ai_logo.png"
               >
-                <source src="/Ampora-AI/artifacts/Bubble_Sort_Algorithm.mp4" type="video/mp4" />
+                <source src="/Ampora-AI/Bubble_Sort_Algorithm.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
           </div>
-          
+
           <div className="demo-card">
             <h3>Platform Walkthrough</h3>
             <p className="demo-description">
-              See how easy it is to generate video content with Ampora AI. 
+              See how easy it is to generate video content with Ampora AI.
               From prompt to video in minutes.
             </p>
             <div className="video-wrapper">
-              <div className="video-placeholder">
-                <p>📹 Screen Recording Coming Soon</p>
-                <p className="placeholder-note">
-                  This will show a complete walkthrough of the platform
-                </p>
-              </div>
+              <video
+                controls
+                className="demo-video"
+                poster="/Ampora-AI/ampora_ai_logo.png"
+              >
+                <source src="/Ampora-AI/Balance_Sheet.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </div>

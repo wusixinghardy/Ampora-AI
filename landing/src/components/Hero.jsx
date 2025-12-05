@@ -21,9 +21,7 @@ const Hero = () => {
             className="hero-logo"
           />
           
-          {/* FIX: Added inline styles here (display: flex, gap: 30px) 
-             to fix the squished links seen in your screenshot. 
-          */}
+          {/* Inline styles added to fix squished nav links */}
           <nav className="hero-nav" style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <a href="#about">About</a>
             <a href="#demos">Demos</a>

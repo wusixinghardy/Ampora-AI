@@ -28,5 +28,12 @@ html {
   background-color: #555;
 }
 
-
-
+/* =========================================
+   ADDED: Option 2 Logo Styles
+   ========================================= */
+.hero-logo {
+  height: 90px;        /* Increased size */
+  width: auto;         /* Keeps aspect ratio */
+  border-radius: 18px; /* Rounds the corners to look like an app icon */
+  margin-right: 20px;  /* Adds some space between logo and nav links */
+}

@@ -8,7 +8,7 @@
  */
 
 // Configuration - Set to false to use real backend
-const USE_MOCK_AUTH = true; // Change this to false when backend is ready
+const USE_MOCK_AUTH = false; // Changed to false - backend is ready!
 
 // Test accounts (for development/testing)
 const TEST_ACCOUNTS = {
@@ -312,5 +312,6 @@ export const TEST_ACCOUNT_INFO = {
     email: TEST_ACCOUNTS[username].email
   }))
 };
+
 
 

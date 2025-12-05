@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
 import { authService } from '../services/mockAuth';
+import PaymentStep from './PaymentStep';
 import '../styles/LoginSignup.css';
 
 const LoginSignup = ({ onLogin }) => {
@@ -13,9 +14,9 @@ const LoginSignup = ({ onLogin }) => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  // Future: Add state for Stripe payment process
-  // const [showPayment, setShowPayment] = useState(false);
-  // const [paymentIntentId, setPaymentIntentId] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
+  const [paymentIntentId, setPaymentIntentId] = useState(null);
+  const [subscriptionPrice, setSubscriptionPrice] = useState(9.99);
 
   const handleChange = (e) => {
     setFormData({
@@ -51,23 +52,23 @@ const LoginSignup = ({ onLogin }) => {
           return;
         }
 
-        // TODO: Future - Integrate Stripe payment here
-        // Step 1: Create payment intent with Stripe
-        // Step 2: Show payment form
-        // Step 3: After successful payment, get paymentIntentId
-        // Step 4: Call signup with paymentIntentId
+        // Check if test account (bypasses payment)
+        const testAccounts = ['testuser', 'demo', 'dev', 'admin'];
+        const isTestAccount = testAccounts.includes(formData.username.toLowerCase());
         
-        // For now, signup without payment (mock auth or backend without payment)
-        const paymentIntentId = null; // Will be populated when Stripe is integrated
-        
-        const result = await authService.signup(
-          formData.username,
-          formData.email,
-          formData.password,
-          paymentIntentId
-        );
-        
-        onLogin(result.token, result.user);
+        if (isTestAccount) {
+          // Test accounts bypass payment
+          const result = await authService.signup(
+            formData.username,
+            formData.email,
+            formData.password,
+            null
+          );
+          onLogin(result.token, result.user);
+        } else {
+          // Show payment step for real accounts
+          setShowPayment(true);
+        }
       }
     } catch (err) {
       // Handle errors from auth service
@@ -175,10 +176,44 @@ const LoginSignup = ({ onLogin }) => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
-          </button>
+          {!showPayment && (
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? 'Processing...' : (isLogin ? 'Login' : 'Sign Up')}
+            </button>
+          )}
         </form>
+
+        {showPayment && (
+          <div className="payment-wrapper">
+            <PaymentStep
+              amount={subscriptionPrice}
+              onPaymentSuccess={async (paymentIntentId) => {
+                try {
+                  setLoading(true);
+                  setError('');
+                  
+                  const result = await authService.signup(
+                    formData.username,
+                    formData.email,
+                    formData.password,
+                    paymentIntentId
+                  );
+                  
+                  onLogin(result.token, result.user);
+                } catch (err) {
+                  setError(err.message || 'Signup failed after payment');
+                  setShowPayment(false);
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              onCancel={() => {
+                setShowPayment(false);
+                setError('');
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,86 +1,184 @@
-# Ampora AI
+# Ampora AI - AI-Powered Career Learning Platform
 
-AI-powered career coaching and learning platform that tracks the progress of students and early-career professionals, personalizes learning content, and simulates role-specific mock interviews to build job-ready skills.
-
-Our first step is to generate video courses on STEM topics. Students can input any technical concept (like "explain convolutional neural networks" or "how to prep for a Google SWE interview") and receive a complete video lesson with slides, voiceover, and visual explanations generated in minutes.
-
-We're building this because quality STEM education materials are expensive and time-consuming to create, but AI can now generate personalized explanations at near-zero cost, making technical education accessible to everyone regardless of their financial background.
+Transform any technical concept into a complete video lesson with slides, voiceover, and visual explanations—generated in minutes, not hours.
 
 ---
 
-## Project Structure
+## 🚀 Quick Start
 
-```
-Ampora-AI/
-├── frontend/          # React frontend application
-├── backend/           # FastAPI backend services
-└── README.md          # This file
-```
+**See [SETUP_GUIDE.md](./SETUP_GUIDE.md) for complete setup instructions.**
 
----
+### 3-Minute Setup:
 
-## Quick Start
+1. **Backend:**
+   ```powershell
+   cd backend
+   python -m venv venv-fastapi
+   venv-fastapi\Scripts\activate
+   pip install -r requirements.txt
+   # Create .env file (see SETUP_GUIDE.md)
+   python main.py
+   ```
 
-### Frontend
-
-1. Navigate to frontend:
+2. **Frontend:**
    ```powershell
    cd frontend
-   ```
-
-2. Install dependencies:
-   ```powershell
    npm install
-   ```
-
-3. Run development server:
-   ```powershell
+   # Create .env file (see SETUP_GUIDE.md)
    npm run dev
    ```
 
-4. Open browser: `http://localhost:3000`
+3. **Landing Page:**
+   ```powershell
+   cd landing
+   npm install
+   npm run dev
+   ```
 
-**See `frontend/README.md` for detailed frontend documentation, test accounts, and sample prompts.**
-
-### Backend
-
-See `backend/README.md` for backend setup instructions.
+**Access:**
+- Landing: http://localhost:3001
+- App: http://localhost:3000
+- API: http://localhost:5000
 
 ---
 
-## Features
+## 📁 Project Structure
 
-- ✅ **Video Generation** - Generate complete video lessons from text prompts
-- ✅ **Authentication** - User login and signup system
+```
+Ampora-AI/
+├── artifacts/              # Demo videos, logos, team photos
+├── backend/                # FastAPI server (Python)
+│   ├── main.py            # API endpoints
+│   ├── src/               # Services (video, voice, visualization)
+│   └── requirements.txt   # Python dependencies
+├── frontend/              # Main application (React)
+│   ├── src/
+│   │   ├── components/   # UI components
+│   │   └── services/     # API services
+│   └── package.json
+├── landing/               # Marketing website (React)
+│   ├── src/
+│   └── package.json
+└── [documentation files]
+```
+
+---
+
+## 🎯 Features
+
+- ✅ **AI Video Generation** - Create complete video lessons from text prompts
+- ✅ **User Authentication** - Secure login/signup with Supabase
+- ✅ **Payment Integration** - Stripe monthly subscriptions
+- ✅ **Landing Page** - Professional marketing site
 - ✅ **Chat Interface** - Interactive chatbot for video requests
-- ✅ **Real-time Processing** - Live status updates during video generation
+- ✅ **Video Player** - Download and view generated videos
 
 ---
 
-## Documentation
+## 📚 Documentation
 
-- **Frontend:** See `frontend/README.md` for:
-  - Setup instructions
-  - Test accounts
-  - Sample prompts
-  - API integration guide
-  - Postman testing guide
-
-- **Backend:** See `backend/README.md` for:
-  - Backend setup
-  - API endpoints
-  - Service documentation
+| Document | Description |
+|----------|-------------|
+| [SETUP_GUIDE.md](./SETUP_GUIDE.md) | Complete setup instructions |
+| [TECHNOLOGY_EXPLANATION.md](./TECHNOLOGY_EXPLANATION.md) | Tech stack explained (for investors) |
+| [COMPLETE_IMPLEMENTATION_SUMMARY.md](./COMPLETE_IMPLEMENTATION_SUMMARY.md) | What was built and next steps |
+| [ACCESSING_PAGES_GUIDE.md](./ACCESSING_PAGES_GUIDE.md) | How to access all 3 pages for recording |
+| [GITHUB_PAGES_DEPLOYMENT.md](./GITHUB_PAGES_DEPLOYMENT.md) | Deploy to GitHub Pages |
+| [frontend/POSTMAN_GUIDE.md](./frontend/POSTMAN_GUIDE.md) | API testing with Postman |
 
 ---
 
-## Technologies
+## 🔧 Configuration Required
+
+### Backend (.env)
+```env
+OPENAI_API_KEY=sk-...
+GEMINI_API_KEY=...
+SUPABASE_URL=https://xxx.supabase.co
+SUPABASE_KEY=xxx
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_SUBSCRIPTION_PRICE=9.99
+JWT_SECRET=your-secret-key
+TEST_MODE=true
+```
+
+### Frontend (.env)
+```env
+VITE_API_URL=http://localhost:5000
+VITE_USE_MOCK_AUTH=false
+VITE_USE_MOCK_CHAT=false
+VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
+```
+
+---
+
+## 🧪 Test Accounts
+
+These accounts bypass payment (for development):
+- `testuser` / `test123`
+- `demo` / `demo123`
+- `dev` / (any password)
+- `admin` / (any password)
+
+---
+
+## 💰 Pricing
+
+- **Subscription:** $9.99/month (configurable)
+- **Video Generation:** ~$4 per video (AI API costs)
+- **Change Price:** Edit `STRIPE_SUBSCRIPTION_PRICE` in backend .env
+
+---
+
+## 🛠️ Tech Stack
 
 - **Frontend:** React 18, Vite, React Router
-- **Backend:** FastAPI, Python
-- **AI Services:** OpenAI, Gemini
+- **Backend:** FastAPI (Python), Uvicorn
+- **Database:** Supabase (PostgreSQL)
+- **Authentication:** JWT, bcrypt
+- **Payment:** Stripe
+- **AI:** OpenAI GPT-4, Google Gemini
+- **Video:** MoviePy
+
+**See [TECHNOLOGY_EXPLANATION.md](./TECHNOLOGY_EXPLANATION.md) for details.**
 
 ---
 
-## Contributing
+## 📝 Next Steps
 
-See individual component README files for specific setup instructions.
+1. ✅ Set up Supabase (create users table)
+2. ✅ Set up Stripe (get API keys)
+3. ✅ Configure .env files
+4. ✅ Add team photos to artifacts/
+5. ✅ Add Google Forms link
+6. ✅ Record demo video
+7. ✅ Deploy to GitHub Pages
+
+**See [COMPLETE_IMPLEMENTATION_SUMMARY.md](./COMPLETE_IMPLEMENTATION_SUMMARY.md) for checklist.**
+
+---
+
+## 🎬 For Investors
+
+**Key Highlights:**
+- Modern, scalable architecture
+- Production-ready code
+- Secure authentication & payments
+- AI-powered content generation
+- Professional landing page
+
+**Demo:**
+- Landing page: http://localhost:3001
+- App: http://localhost:3000
+- Test account: `testuser` / `test123`
+
+---
+
+## 📞 Support
+
+For setup issues, see [SETUP_GUIDE.md](./SETUP_GUIDE.md).  
+For technology questions, see [TECHNOLOGY_EXPLANATION.md](./TECHNOLOGY_EXPLANATION.md).
+
+---
+
+**Built with ❤️ by the Ampora AI Team**

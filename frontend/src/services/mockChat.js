@@ -6,7 +6,7 @@
  */
 
 // Configuration - Set to false to use real backend
-const USE_MOCK_CHAT = true; // Change this to false when backend is ready
+const USE_MOCK_CHAT = false; // Changed to false - backend is ready!
 
 // Simulate network delay
 const simulateDelay = (ms = 1000) => {
@@ -112,5 +112,6 @@ export const mockChatService = {
 };
 
 export default mockChatService;
+
 
 

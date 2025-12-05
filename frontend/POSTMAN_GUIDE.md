@@ -30,25 +30,20 @@ Postman allows you to:
 
 ## ⚠️ Important: Backend Must Be Running!
 
-**The error "ECONNREFUSED 127.0.0.1:5000" means:**
-- No server is running on port 5000
-- The backend hasn't been implemented yet OR
-- The backend server is not started
+**Before testing in Postman:**
+1. ✅ Start backend server: `cd backend && python main.py`
+2. ✅ Backend should be running on `http://localhost:5000`
+3. ✅ Check health: GET `http://localhost:5000/api/health`
 
-**You CANNOT test backend endpoints with Postman until:**
-1. The backend is implemented by Hardy/Sam
-2. The backend server is running on port 5000
-
-**Current Status:**
-- ✅ Frontend uses **mock services** (works without backend)
-- ❌ **No real backend yet** - Postman won't work until backend is ready
-- ⏳ Postman testing will work once backend is running
+**If you see "ECONNREFUSED 127.0.0.1:5000":**
+- Backend server is not running
+- Start it first (see SETUP_GUIDE.md)
 
 ---
 
-## 🧪 Testing Mock Endpoints (Current Frontend)
+## 🧪 Backend is Ready!
 
-Since the frontend uses mock services, you can test them via localStorage or directly in browser console. However, once the backend is ready, use Postman to test:
+The backend API is now implemented. You can test all endpoints with Postman!
 
 ---
 
@@ -104,13 +99,23 @@ Since the frontend uses mock services, you can test them via localStorage or dir
 }
 ```
 
-**After Success:**
-- Copy the `token` value
-- In Collection Variables, set `token` variable to this value
+**After Success - Auto-Save Token:**
+1. Go to **"Tests"** tab in this request
+2. Add this script:
+   ```javascript
+   if (pm.response.code === 200) {
+       var jsonData = pm.response.json();
+       pm.collectionVariables.set("token", jsonData.token);
+       console.log("Token saved automatically!");
+   }
+   ```
+3. Now token auto-saves after login!
 
 ---
 
 ### Test 2: User Signup
+
+**Note:** Signup requires Stripe payment. For testing, use test accounts or set `TEST_MODE=true` in backend.
 
 **Request Setup:**
 - Method: `POST`
@@ -124,9 +129,14 @@ Since the frontend uses mock services, you can test them via localStorage or dir
   {
     "username": "newuser",
     "email": "newuser@example.com",
-    "password": "password123"
+    "password": "password123",
+    "payment_intent_id": null
   }
   ```
+  
+**For Test Accounts (bypass payment):**
+- Username: `testuser`, `demo`, `dev`, or `admin`
+- `payment_intent_id` can be `null`
 
 **Expected Response:**
 ```json
@@ -144,7 +154,9 @@ Since the frontend uses mock services, you can test them via localStorage or dir
 
 ## 💬 Chat Endpoints
 
-### Test 3: Send Chat Message
+### Test 3: Send Chat Message (Generate Video)
+
+**⚠️ WARNING:** This generates a video and costs ~$4 in AI API calls!
 
 **Request Setup:**
 - Method: `POST`
@@ -164,34 +176,49 @@ Since the frontend uses mock services, you can test them via localStorage or dir
 **Expected Response:**
 ```json
 {
-  "response": "I'm processing your video generation request...",
-  "video_url": null
+  "response": "I've generated a video lecture about 'Create a video about machine learning'. The video is ready for download!",
+  "video_url": "/api/videos/generated_video_user123_20250104_120000.mp4",
+  "topic": "Create a video about machine learning"
 }
 ```
 
-**Or with Video:**
-```json
-{
-  "response": "Your video has been generated!",
-  "video_url": "http://localhost:5000/videos/generated_video_123.mp4"
-}
-```
+**Note:** Video generation takes 2-5 minutes. The response includes the video URL.
 
----
-
-## 🎬 Video Generation Endpoints
-
-### Test 4: Get Video Status
-
-(When implemented by backend team)
+### Test 4: Get Generated Video
 
 **Request Setup:**
 - Method: `GET`
-- URL: `{{base_url}}/api/video/status/{video_id}`
+- URL: `{{base_url}}/api/videos/{filename}`
+- Replace `{filename}` with filename from chat response
+
+**Expected Response:**
+- Video file (MP4) downloads or streams
+
+---
+
+## 💳 Stripe Payment Endpoints
+
+### Test 5: Create Payment Intent
+
+**Request Setup:**
+- Method: `POST`
+- URL: `{{base_url}}/api/stripe/create-payment-intent`
 - Headers:
   ```
-  Authorization: Bearer {{token}}
+  Content-Type: application/json
   ```
+- Body: (empty or `{}`)
+
+**Expected Response:**
+```json
+{
+  "client_secret": "pi_xxx_secret_xxx",
+  "payment_intent_id": "pi_xxx",
+  "amount": 9.99
+}
+```
+
+**Use this for:** Frontend payment form initialization
 
 ---
 

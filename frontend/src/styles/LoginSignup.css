@@ -164,6 +164,12 @@
   cursor: not-allowed;
 }
 
+.payment-wrapper {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #333;
+}
+
 /* Test Account Info */
 .test-account-hint {
   margin-top: 15px;

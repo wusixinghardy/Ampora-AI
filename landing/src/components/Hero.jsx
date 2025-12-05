@@ -1,3 +1,4 @@
+import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import '../styles/Hero.css';
 
@@ -19,11 +20,16 @@ const Hero = () => {
             alt="Ampora AI Logo"
             className="hero-logo"
           />
-          <nav className="hero-nav">
+          
+          {/* FIX: Added inline styles here (display: flex, gap: 30px) 
+             to fix the squished links seen in your screenshot. 
+          */}
+          <nav className="hero-nav" style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
             <a href="#about">About</a>
             <a href="#demos">Demos</a>
             <a href="#team">Our Team</a>
           </nav>
+
           <button className="coming-soon-button" disabled style={{ cursor: 'not-allowed', opacity: 0.6 }}>
             Coming Soon
           </button>

@@ -5,41 +5,40 @@ const About = () => {
   return (
     <section className="about" id="about">
       <div className="about-container">
-        <h2 className="section-title">What is Ampora AI?</h2>
+        <h2 className="section-title">What is Ampora?</h2>
         
         <div className="about-content">
           <div className="about-text">
             <p className="about-paragraph">
-              Ampora AI is an educational video generation platform that automatically creates 
-              high-quality, StatQuest-style video lessons on STEM topics. Students can input 
-              any technical concept (like "explain convolutional neural networks" or "how to 
-              prep for a Google SWE interview") and receive a complete video lesson with slides, 
-              voiceover, and visual explanations generated in minutes.
+              Ampora is a generative AI platform that transforms text, PDFs, and research papers 
+              into systematic, long-form video courses. Unlike standard video tools that create 
+              short clips, our engine builds complete, coherent lectures with professional voiceovers 
+              and visual storytelling—instantly.
             </p>
             
             <p className="about-paragraph">
-              Our platform combines the visual teaching excellence of channels like StatQuest and 
-              3Blue1Brown with AI-powered personalization, making complex STEM concepts accessible 
-              to everyone. Beyond educational content, we also provide career advancement features 
-              including interview preparation and skill development resources.
+              We bridge the gap between higher education and enterprise training. Whether you are 
+              a student needing a guide for a just-published research paper, or a company 
+              needing to scale internal compliance and technical onboarding, Ampora automates 
+              the production of high-quality, copyright-compliant educational video at scale.
             </p>
             
             <div className="features-grid">
               <div className="feature-card">
-                <h3>⚡ Fast Generation</h3>
-                <p>Complete video lessons in minutes, not hours</p>
+                <h3>🎥 Instant Long-Form</h3>
+                <p>Generate full 20+ minute lectures, not just short clips</p>
               </div>
               <div className="feature-card">
-                <h3>💰 Cost-Effective</h3>
-                <p>Near-zero cost compared to traditional content creation</p>
+                <h3>📄 Universal Input</h3>
+                <p>Turn PDFs, codebases, or prompt text into video courses</p>
               </div>
               <div className="feature-card">
-                <h3>🎯 Personalized</h3>
-                <p>AI-generated content tailored to your learning needs</p>
+                <h3>🏢 Enterprise Ready</h3>
+                <p>Secure, copyright-compliant generation for internal training</p>
               </div>
               <div className="feature-card">
-                <h3>📚 STEM Focused</h3>
-                <p>Specialized in technical content with career advancement tools</p>
+                <h3>🎯 Adaptive Learning</h3>
+                <p>Personalized depth and pacing for any skill level</p>
               </div>
             </div>
           </div>

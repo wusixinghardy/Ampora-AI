@@ -14,7 +14,7 @@ const Footer = () => {
               className="footer-logo"
             />
             <p className="footer-tagline">
-              AI-Powered Educational Video Generation Platform
+              AI-Powered Professional Video Generation Platform
             </p>
           </div>
 

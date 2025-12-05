@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+.pytest_cache/
+
+# Virtual envs
+.env
+.venv
+venv/
+ENV/
+env/
+venv-fastapi/
+__pycache__/
+*.pyc
+
+# Editor stuff
+.vscode/
+.idea/
+
+# OS stuff
+.DS_Store
+
+# Local logs
+logs/
+*.log

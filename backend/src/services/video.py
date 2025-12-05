@@ -3,7 +3,7 @@ import json
 from typing import List, Dict, Any
 
 # Import our modules
-import src.services.lecture1 as lecture1
+import src.services.lecture as lecture
 import src.services.visualization as visualization
 import src.services.voice as voice
 
@@ -43,15 +43,15 @@ def generate_lecture_video(topic: str, output_filename: str = "lecture_video.mp4
     print("--- [Phase 1] Generating Lecture Content ---")
     
     # 1.1 Objectives
-    objectives = lecture1.generate_learning_objectives(topic)
+    objectives = lecture.generate_learning_objectives(topic)
     print(f"✅ Generated {len(objectives)} learning objectives.")
     
     # 1.2 Slide Plan
-    plan = lecture1.generate_slide_plan(objectives)
+    plan = lecture.generate_slide_plan(objectives)
     print(f"✅ Generated plan with {len(plan)} slides.")
     
     # 1.3 Full Slide Content (Script + Visual descriptions)
-    slides_content = lecture1.generate_slide_content(plan)
+    slides_content = lecture.generate_slide_content(plan)
     print(f"✅ Generated full content for {len(slides_content)} slides.")
 
 
@@ -85,7 +85,7 @@ def generate_lecture_video(topic: str, output_filename: str = "lecture_video.mp4
     # ============================================================
     print("\n--- [Phase 3] Generating Voiceovers ---")
     
-    scripts = lecture1.get_scripts(slides_content)
+    scripts = lecture.get_scripts(slides_content)
     
     audio_paths = voice.generate_audio_from_scripts(
         scripts=scripts,
@@ -170,7 +170,7 @@ def generate_lecture_video(topic: str, output_filename: str = "lecture_video.mp4
 if __name__ == "__main__":
     # Interactive Mode
     try:
-        topic = "Bubble Sort Algorithm"
+        topic = "Balance Sheet"
         print(f"--- Video Generator (MoviePy v2.2.1) ---")
         file = f"{topic.replace(' ', '_')}.mp4"
         generate_lecture_video(topic, file)

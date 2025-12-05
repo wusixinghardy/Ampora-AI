@@ -25,19 +25,19 @@ const About = () => {
             
             <div className="features-grid">
               <div className="feature-card">
-                <h3>🎥 Instant Long-Form</h3>
+                <h3>Instant Long-Form</h3>
                 <p>Generate full 20+ minute lectures, not just short clips</p>
               </div>
               <div className="feature-card">
-                <h3>📄 Universal Input</h3>
+                <h3>Universal Input</h3>
                 <p>Turn PDFs, codebases, or prompt text into video courses</p>
               </div>
               <div className="feature-card">
-                <h3>🏢 Enterprise Ready</h3>
+                <h3>Enterprise Ready</h3>
                 <p>Secure, copyright-compliant generation for internal training</p>
               </div>
               <div className="feature-card">
-                <h3>🎯 Adaptive Learning</h3>
+                <h3>Adaptive Learning</h3>
                 <p>Personalized depth and pacing for any skill level</p>
               </div>
             </div>

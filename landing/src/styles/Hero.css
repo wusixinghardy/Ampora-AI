@@ -1,18 +1,30 @@
+/* src/styles/Hero.css */
 .hero {
-  min-height: 100vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+  background-color: #fdfbf7; /* Match paper background from index.css */
+  
+  /* Optional: faint grid pattern for sketchbook look */
+  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 20px 20px;
+  
   position: relative;
   overflow: hidden;
+  border-bottom: 3px solid var(--ink-black);
 }
 
 .hero-container {
   max-width: 1200px;
   width: 100%;
   z-index: 1;
+  background: #fdfbf7; /* Opaque background to hide grid behind text */
+  padding: 40px;
+  border: 3px solid var(--ink-black); /* Boxed comic panel look */
+  /* Blue Pastel Shadow Accent */
+  box-shadow: 12px 12px 0px var(--pencil-blue); 
 }
 
 .hero-header {
@@ -20,30 +32,64 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 60px;
+  padding-bottom: 20px;
+  border-bottom: 2px dashed #ccc; /* Dashed line looks sketched */
 }
 
 .hero-logo {
-  height: 60px;
+  height: 70px;
   width: auto;
   object-fit: contain;
 }
 
+.hero-nav {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.hero-nav a {
+  color: var(--ink-black);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+/* Highlighter underline effect on hover */
+.hero-nav a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  bottom: 0;
+  left: 0;
+  background: var(--pencil-yellow);
+  z-index: -1;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+  transform-origin: bottom right;
+}
+
+.hero-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
 .coming-soon-button {
-  padding: 12px 24px;
-  background: rgba(14, 165, 233, 0.2);
-  border: 2px solid #0EA5E9;
-  color: #0EA5E9;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 10px 20px;
+  background: #fff;
+  border: 2px solid var(--ink-black);
+  color: var(--ink-black);
+  font-weight: 700;
+  box-shadow: 4px 4px 0px #ddd;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .coming-soon-button:hover:not(:disabled) {
-  background: rgba(14, 165, 233, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+  box-shadow: 6px 6px 0px #ccc;
 }
 
 .coming-soon-button:disabled {
@@ -52,40 +98,47 @@
 }
 
 .hero-content {
-  text-align: center;
+  text-align: left;
   max-width: 900px;
   margin: 0 auto;
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: 4rem;
+  font-weight: 900;
   margin-bottom: 24px;
-  background: linear-gradient(135deg, #0EA5E9 0%, #00ffcc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
+  color: var(--ink-black);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.hero-title strong {
+  /* Marker highlight effect for bold text */
+  background: linear-gradient(120deg, var(--pencil-blue) 0%, var(--pencil-blue) 100%);
+  background-repeat: no-repeat;
+  background-size: 100% 30%;
+  background-position: 0 88%;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
-  color: #e0e0e0;
-  margin-bottom: 20px;
-  line-height: 1.6;
+  font-size: 1.4rem;
+  color: #444;
+  margin-bottom: 30px;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
 .hero-description {
   font-size: 1.1rem;
-  color: #aaa;
+  color: #333;
   margin-bottom: 40px;
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 .hero-buttons {
   display: flex;
   gap: 20px;
-  justify-content: center;
+  margin-top: 40px;
   flex-wrap: wrap;
 }
 
@@ -93,52 +146,55 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 16px 32px;
+  padding: 18px 36px;
   font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
+  font-weight: 700;
+  border: 3px solid var(--ink-black);
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
   text-decoration: none;
+  background: #fff;
+  color: var(--ink-black);
 }
 
 .cta-button.primary {
-  background: linear-gradient(135deg, #0EA5E9 0%, #00ffcc 100%);
-  color: #0f0f0f;
+  /* Yellow "Sticky Note" color */
+  background: var(--pencil-yellow); 
+  box-shadow: 6px 6px 0px var(--ink-black);
 }
 
 .cta-button.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.4);
+  transform: translate(-2px, -2px);
+  box-shadow: 10px 10px 0px var(--ink-black);
+  background: #fde047; /* Slightly darker yellow on hover */
 }
 
 .button-icon {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
+/* --- THE MODIFIED SECTION --- */
 .forms-explanation {
-  margin-top: 30px;
-  font-size: 0.95rem;
-  color: #aaa;
+  margin-top: 80px; /* Increased space as requested */
+  
+  font-size: 1rem;
+  color: #555;
   line-height: 1.6;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  font-style: italic;
+  font-style: normal; /* Removed italics for cleaner look */
+  border-left: 4px solid var(--ink-black);
+  padding-left: 20px;
+  max-width: 800px;
 }
 
 @media (max-width: 768px) {
+  .hero-container {
+    padding: 20px;
+    box-shadow: 8px 8px 0px var(--pencil-blue);
+  }
   .hero-title {
     font-size: 2.5rem;
   }
-  
   .hero-subtitle {
     font-size: 1.2rem;
   }
-  
-  .hero-description {
-    font-size: 1rem;
-  }
 }
-

@@ -1,6 +1,8 @@
 .demos {
-  padding: 100px 20px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #0f0f0f 100%);
+  padding: 80px 20px;
+  background: #ffffff;
+  /* Top border to separate from previous section */
+  border-top: 3px solid var(--ink-black); 
 }
 
 .demos-container {
@@ -10,75 +12,83 @@
 
 .demos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  gap: 40px;
+  /* CHANGE: Force 2 columns side-by-side on desktop */
+  grid-template-columns: 1fr 1fr; 
+  gap: 40px; /* Space between the two cards */
   margin-top: 60px;
 }
 
 .demo-card {
-  background: #1e1e1e;
-  border-radius: 12px;
+  background: #ffffff;
   padding: 30px;
-  border: 1px solid #333;
+  border: 3px solid var(--ink-black);
+  /* Default shadow */
+  box-shadow: 10px 10px 0px #eee; 
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+/* --- COLORED PENCIL ACCENTS --- */
+
+/* First card gets a Blue shadow */
+.demo-card:nth-child(1) {
+  box-shadow: 10px 10px 0px var(--pencil-blue);
+}
+
+/* Second card gets a Pink shadow */
+.demo-card:nth-child(2) {
+  box-shadow: 10px 10px 0px var(--pencil-pink);
+}
+
+.demo-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 14px 14px 0px var(--ink-black); /* Hard black shadow on hover */
 }
 
 .demo-card h3 {
-  font-size: 1.8rem;
-  color: #0EA5E9;
+  font-size: 1.5rem;
+  color: var(--ink-black);
   margin-bottom: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .demo-description {
-  color: #aaa;
+  color: #333;
   margin-bottom: 24px;
-  line-height: 1.6;
+  line-height: 1.5;
+  font-size: 1rem;
+  flex-grow: 1; /* Ensures buttons/videos align at bottom if text length differs */
 }
 
 .video-wrapper {
   width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
+  border: 3px solid var(--ink-black);
   background: #000;
+  /* This prevents the video from overflowing the card */
+  overflow: hidden; 
+  position: relative;
+  /* Optional: Enforce aspect ratio to keep them identical height */
+  aspect-ratio: 16 / 9; 
 }
 
 .demo-video {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover; /* Ensures video fills the box neatly */
   display: block;
 }
 
-.video-placeholder {
-  width: 100%;
-  aspect-ratio: 16/9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
-  color: #888;
-  border: 2px dashed #444;
-}
-
-.video-placeholder p {
-  font-size: 1.2rem;
-  margin: 8px 0;
-}
-
-.placeholder-note {
-  font-size: 0.9rem;
-  color: #666;
-}
-
+/* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
+  .demos-grid {
+    /* Stack them back to 1 column on phones so they aren't too squished */
+    grid-template-columns: 1fr; 
+    gap: 40px;
+  }
+  
   .demos {
     padding: 60px 20px;
   }
-  
-  .demos-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
 }
-
-
-

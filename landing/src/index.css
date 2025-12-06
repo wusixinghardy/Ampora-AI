@@ -1,3 +1,4 @@
+/* src/index.css */
 * {
   margin: 0;
   padding: 0;
@@ -5,12 +6,22 @@
 }
 
 :root {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0f0f0f;
+  
+  color-scheme: light;
+  color: #1a1a1a; /* Soften pure black to "Pencil Lead" dark grey */
+  background-color: #fdfbf7; /* "Sketchbook Paper" off-white */
+  
+  /* --- COLORED PENCIL PALETTE --- */
+  --pencil-blue: #a2d2ff;
+  --pencil-yellow: #fef9c3;
+  --pencil-green: #bbf7d0;
+  --pencil-pink: #fbcfe8;
+  --pencil-purple: #e9d5ff;
+  --ink-black: #000000;
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -21,12 +32,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--background-color);
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
 }
-
-
-

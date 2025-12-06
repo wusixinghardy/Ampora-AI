@@ -1,19 +1,16 @@
+/* src/styles/Team.css */
 .team {
   padding: 100px 20px;
-  background-color: #0f0f0f;
-}
-
-.team-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  background-color: #fdfbf7; /* Paper background */
+  border-top: 3px solid var(--ink-black);
 }
 
 .team-members {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 80px;
   flex-wrap: wrap;
-  margin-top: 60px;
+  margin-top: 80px;
 }
 
 .team-member {
@@ -21,113 +18,61 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 300px;
+  max-width: 350px;
 }
 
 .member-image-container {
   position: relative;
-  width: 200px;
-  height: 200px;
-  margin-bottom: 24px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #0EA5E9;
-  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  width: 220px;
+  height: 220px;
+  margin-bottom: 30px;
+  z-index: 1;
 }
 
+/* The Photo Circle */
 .member-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--ink-black);
+  background: #fff;
+  position: relative;
+  z-index: 2;
 }
 
-.member-placeholder {
+/* The Colored "Sticky Note" behind the photo */
+.member-image-container::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
-  color: #888;
+  background-color: var(--pencil-blue); /* Default Blue */
+  border: 3px solid var(--ink-black);
+  z-index: 1;
+  border-radius: 0; /* Square offset looks cool vs round photo */
 }
 
-.placeholder-icon {
-  font-size: 4rem;
-  margin-bottom: 10px;
+/* Vary the colors for each member using nth-child on the PARENT (.team-member) */
+.team-member:nth-child(2) .member-image-container::after {
+  background-color: var(--pencil-yellow);
 }
 
-.member-placeholder p {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.member-info {
-  width: 100%;
-}
-
-.member-name {
-  font-size: 1.5rem;
-  color: #0EA5E9;
-  margin-bottom: 8px;
-  font-weight: 600;
+.team-member:nth-child(3) .member-image-container::after {
+  background-color: var(--pencil-pink);
 }
 
 .member-role {
-  font-size: 1.1rem;
-  color: #e0e0e0;
-  margin-bottom: 12px;
-  font-weight: 500;
-}
-
-.member-description {
-  font-size: 0.95rem;
-  color: #aaa;
-  line-height: 1.6;
-}
-
-.why-team-section {
-  margin-top: 80px;
-  padding: 40px;
-  background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
-  border-radius: 12px;
-  border: 1px solid #333;
-  text-align: center;
-}
-
-.why-team-title {
-  font-size: 2rem;
-  color: #0EA5E9;
-  margin-bottom: 24px;
+  font-size: 1rem;
   font-weight: 700;
+  text-transform: uppercase;
+  background: var(--ink-black);
+  color: #fff;
+  padding: 4px 12px;
+  display: inline-block;
+  margin-bottom: 12px;
+  /* Rotate slightly for sticker look */
+  transform: rotate(-2deg); 
 }
-
-.why-team-text {
-  font-size: 1.1rem;
-  color: #e0e0e0;
-  line-height: 1.8;
-  margin-bottom: 20px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.why-team-text:last-child {
-  margin-bottom: 0;
-}
-
-@media (max-width: 768px) {
-  .team {
-    padding: 60px 20px;
-  }
-  
-  .team-members {
-    gap: 40px;
-  }
-  
-  .member-image-container {
-    width: 150px;
-    height: 150px;
-  }
-}
-

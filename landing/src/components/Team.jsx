@@ -9,14 +9,14 @@ const Team = () => {
     {
       id: 1,
       name: 'Sixing (Hardy) Wu',
-      role: 'Chief Executive Officer',
+      role: 'Co-Founder & Chief Executive Officer',
       description: 'Brings technical depth in backend and AI integration features combined with strategic business vision to drive Ampora\'s growth and innovation.',
       image: `${basePath}hardy_headshot.jpeg`
     },
     {
       id: 2,
       name: 'Sam Liu',
-      role: 'Chief Operating Officer',
+      role: 'Co-Founder & Chief Operating Officer',
       description: 'Expert in full product lifecycle management and user experience development, ensuring seamless operations and exceptional user satisfaction.',
       image: `${basePath}sam_headshot.jpg`
     },
